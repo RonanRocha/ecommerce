@@ -5,20 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Ecommerce.Infrastructure.Repositories
 {
-    public class CategoryRepository : GenericRepository<Category, Guid>, ICategoryRepository
+    public class ProductRepository : GenericRepository<Product, Guid>,   IProductRepository
     {
 
-        public CategoryRepository(AppDataContext context) : base(context)
+        public ProductRepository(AppDataContext context) : base(context)
         {
         }
 
-        public Category GetByName(string name)
-        {
-            return _ctx.Categories.Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefault();
-        }
+
+
     }
 }

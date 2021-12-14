@@ -20,7 +20,22 @@ namespace Ecommerce.Api.Mappings
                 .ForMember(x => x.Slug, map => map.Ignore());
 
             CreateMap<Category, CategoryDto>();
-              
+
+
+
+            CreateMap<ProductDto, Product>()
+                .ForMember(x => x.Id, map => map.Ignore())
+                .ForMember(x => x.RegisterDate, map => map.Ignore())
+                .ForMember(x => x.EntityStatus, map => map.Ignore())
+                .ForMember(x => x.DeleteDate, map => map.Ignore())
+                .ForMember(x => x.UpdateDate, map => map.Ignore())
+                .ForMember(x => x.OrderProducts, map => map.Ignore())
+                .ForMember(x => x.Category, map => map.Ignore());
+
+
+
+            CreateMap<Product, ProductDto>();
+
 
         }
     }

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Eccomerce.Domain.Repositories
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<TEntity, TKey> where TEntity : class
     {
 
-        Task<IList<T>> GetAll();
-        Task Save(T Object);
-        Task<T> GetById(Guid id);
-        T Update(T Object);
-        Task Remove(Guid id);
+        Task<IList<TEntity>> GetAll();
+        Task Save(TEntity entity);
+        Task<TEntity> GetById(TKey id);
+        Task Update(TEntity entity);
+        Task Remove(TKey id);
     }
 }

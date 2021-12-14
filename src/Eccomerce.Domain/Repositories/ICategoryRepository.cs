@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Eccomerce.Domain.Repositories
 {
-    public interface ICategoryRepository : IGenericRepository<Category>
+    public interface ICategoryRepository : IGenericRepository<Category, Guid>
     {
 
         Category GetByName(string name);
