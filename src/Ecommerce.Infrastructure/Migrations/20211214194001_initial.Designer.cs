@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ecommerce.Api.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20211212223455_initial")]
+    [Migration("20211214194001_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,6 +22,66 @@ namespace Ecommerce.Api.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Eccomerce.Domain.Entities.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text")
+                        .HasColumnName("city");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deletedate");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("entitystatus");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("text")
+                        .HasColumnName("number");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("registerdate");
+
+                    b.Property<string>("State")
+                        .HasColumnType("text")
+                        .HasColumnName("state");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text")
+                        .HasColumnName("street");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("userid");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("text")
+                        .HasColumnName("zipcode");
+
+                    b.HasKey("Id")
+                        .HasName("pk_addresses");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_addresses_userid");
+
+                    b.ToTable("addresses");
+                });
+
             modelBuilder.Entity("Eccomerce.Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -30,15 +90,33 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deletedate");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("entitystatus");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("varchar")
                         .HasColumnName("name");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("registerdate");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar")
+                        .HasColumnName("slug");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
 
                     b.HasKey("Id")
                         .HasName("pk_categories");
@@ -46,6 +124,10 @@ namespace Ecommerce.Api.Migrations
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasDatabaseName("ix_category_id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_category_slug");
 
                     b.ToTable("categories");
                 });
@@ -58,18 +140,22 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deletedate");
+
                     b.Property<decimal>("Discount")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("discount");
 
-                    b.Property<decimal>("Extra")
-                        .HasColumnType("NUMERIC")
-                        .HasColumnName("extra");
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("entitystatus");
 
                     b.Property<string>("OrderCode")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("varchar")
                         .HasColumnName("ordercode");
 
                     b.Property<DateTime>("OrderDate")
@@ -80,13 +166,21 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("orderstatus");
 
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("registerdate");
+
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("subtotal");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("total");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uuid")
@@ -105,7 +199,7 @@ namespace Ecommerce.Api.Migrations
                     b.ToTable("orders");
                 });
 
-            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderPaymentMethods", b =>
+            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,57 +207,17 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<int?>("Installments")
-                        .HasColumnType("INT")
-                        .HasColumnName("installments");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("orderid");
-
-                    b.Property<decimal>("PaidValue")
-                        .HasColumnType("NUMERIC")
-                        .HasColumnName("paidvalue");
-
-                    b.Property<Guid>("PaymentMethodId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("paymentmethodid");
-
-                    b.Property<DateTime>("RegisterDate")
+                    b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("registerdate");
-
-                    b.HasKey("Id")
-                        .HasName("pk_orderpaymentmethods");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasDatabaseName("ix_orderpaymentmethods_id");
-
-                    b.HasIndex("OrderId")
-                        .HasDatabaseName("ix_orderpaymentmethods_orderid");
-
-                    b.HasIndex("PaymentMethodId")
-                        .HasDatabaseName("ix_orderpaymentmethods_paymentmethodid");
-
-                    b.ToTable("orderpaymentmethods");
-                });
-
-            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderProducts", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id")
-                        .HasDefaultValueSql("uuid_generate_v4()");
+                        .HasColumnName("deletedate");
 
                     b.Property<decimal>("Discount")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("discount");
 
-                    b.Property<decimal>("Extra")
-                        .HasColumnType("NUMERIC")
-                        .HasColumnName("extra");
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("entitystatus");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid")
@@ -178,16 +232,20 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnName("registerdate");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("subtotal");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("total");
 
                     b.Property<decimal>("UnitaryValue")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("unitaryvalue");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
 
                     b.HasKey("Id")
                         .HasName("pk_orderproducts");
@@ -213,29 +271,31 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("VARCHAR")
-                        .HasColumnName("code");
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deletedate");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("varchar")
                         .HasColumnName("description");
 
-                    b.Property<int>("PaymentMethodType")
+                    b.Property<int>("EntityStatus")
                         .HasColumnType("integer")
-                        .HasColumnName("paymentmethodtype");
+                        .HasColumnName("entitystatus");
 
-                    b.Property<int?>("PermitedInstallments")
-                        .HasColumnType("integer")
-                        .HasColumnName("permitedinstallments");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("orderid");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("registerdate");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
 
                     b.HasKey("Id")
                         .HasName("pk_paymentmethods");
@@ -243,6 +303,10 @@ namespace Ecommerce.Api.Migrations
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasDatabaseName("ix_paymentmethod_id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_paymentmethods_orderid");
 
                     b.ToTable("paymentmethods");
                 });
@@ -258,7 +322,7 @@ namespace Ecommerce.Api.Migrations
                     b.Property<string>("Barcode")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("varchar")
                         .HasColumnName("barcode");
 
                     b.Property<string>("CategoryId")
@@ -269,19 +333,35 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("categoryid1");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deletedate");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("varchar")
                         .HasColumnName("description");
 
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("entitystatus");
+
                     b.Property<decimal>("Price")
-                        .HasColumnType("NUMERIC")
+                        .HasColumnType("numeric")
                         .HasColumnName("price");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("registerdate");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updatedate");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("integer")
+                        .HasColumnName("weight");
 
                     b.HasKey("Id")
                         .HasName("pk_products");
@@ -542,6 +622,16 @@ namespace Ecommerce.Api.Migrations
                     b.ToTable("usertokens");
                 });
 
+            modelBuilder.Entity("Eccomerce.Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Eccomerce.Domain.Entities.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_addresses_users_userid");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Eccomerce.Domain.Entities.Order", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.User", "User")
@@ -552,28 +642,7 @@ namespace Ecommerce.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderPaymentMethods", b =>
-                {
-                    b.HasOne("Eccomerce.Domain.Entities.Order", "Order")
-                        .WithMany("OrderPaymentMethods")
-                        .HasForeignKey("OrderId")
-                        .HasConstraintName("fk_orderpaymentmethods_orders_orderid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Eccomerce.Domain.Entities.PaymentMethod", "PaymentMethod")
-                        .WithMany("OrderPaymentMethods")
-                        .HasForeignKey("PaymentMethodId")
-                        .HasConstraintName("fk_orderpaymentmethods_paymentmethods_paymentmethodid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("PaymentMethod");
-                });
-
-            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderProducts", b =>
+            modelBuilder.Entity("Eccomerce.Domain.Entities.OrderProduct", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.Order", "Order")
                         .WithMany("OrderProducts")
@@ -594,12 +663,24 @@ namespace Ecommerce.Api.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Eccomerce.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.HasOne("Eccomerce.Domain.Entities.Order", "Order")
+                        .WithOne("PaymentMethod")
+                        .HasForeignKey("Eccomerce.Domain.Entities.PaymentMethod", "OrderId")
+                        .HasConstraintName("fk_paymentmethods_orders_orderid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Eccomerce.Domain.Entities.Product", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId1")
-                        .HasConstraintName("FK_Product_Category");
+                        .HasConstraintName("fk_products_categories_categoryid1");
 
                     b.Navigation("Category");
                 });
@@ -668,14 +749,9 @@ namespace Ecommerce.Api.Migrations
 
             modelBuilder.Entity("Eccomerce.Domain.Entities.Order", b =>
                 {
-                    b.Navigation("OrderPaymentMethods");
-
                     b.Navigation("OrderProducts");
-                });
 
-            modelBuilder.Entity("Eccomerce.Domain.Entities.PaymentMethod", b =>
-                {
-                    b.Navigation("OrderPaymentMethods");
+                    b.Navigation("PaymentMethod");
                 });
 
             modelBuilder.Entity("Eccomerce.Domain.Entities.Product", b =>
@@ -685,6 +761,8 @@ namespace Ecommerce.Api.Migrations
 
             modelBuilder.Entity("Eccomerce.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

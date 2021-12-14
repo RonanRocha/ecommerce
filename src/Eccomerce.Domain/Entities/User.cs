@@ -8,5 +8,6 @@ namespace Eccomerce.Domain.Entities
     {
 
         public ICollection<Order> Orders { get; set; }
+        public IList<Address> Addresses { get; set; }
     }
 }

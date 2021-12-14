@@ -28,21 +28,21 @@ namespace Ecommerce.Infrastructure.Mappings
             builder.Property(x => x.Description)
                    .IsRequired()
                    .HasMaxLength(500)
-                   .HasColumnType("VARCHAR");
+                   .HasColumnType("varchar");
 
             builder.Property(x => x.Price)
               .IsRequired()
-              .HasColumnType("NUMERIC");
+              .HasColumnType("numeric");
 
             builder.Property(x => x.Barcode)
                   .IsRequired()
                   .HasMaxLength(500)
-                  .HasColumnType("VARCHAR");
+                  .HasColumnType("varchar");
 
 
             builder.HasOne(p => p.Category)
-                   .WithMany(c => c.Products)
-                   .HasConstraintName("FK_Product_Category");
+                   .WithMany(c => c.Products);
+                   
 
 
          

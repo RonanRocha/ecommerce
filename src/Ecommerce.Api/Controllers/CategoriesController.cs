@@ -3,6 +3,7 @@ using Eccomerce.Domain.Entities;
 using Eccomerce.Domain.Repositories;
 using Eccomerce.Domain.UnitOfWork;
 using Ecommerce.Api.Dto;
+using Ecommerce.Api.Helpers;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,6 +20,7 @@ namespace Ecommerce.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _uow;
         private readonly IValidator<Category> _validator;
+        
 
         public CategoriesController(
             ICategoryRepository  categoryRepository,
@@ -37,7 +39,9 @@ namespace Ecommerce.Api.Controllers
         public async Task<ActionResult<IList<CategoryDto>>> GetAll()
         {
             var categories = await _categoryRepository.GetAll();
+
             var result = _mapper.Map<IList<CategoryDto>>(categories);
+
             return Ok(result);
            
         }
@@ -63,9 +67,10 @@ namespace Ecommerce.Api.Controllers
         {
             try
             {
-
-               
+              
                 var category = _mapper.Map<Category>(categoryDto);
+
+                category.Slug = SlugBuilder.GenerateSlug(category.Name);
 
                 var resultValidation = await _validator.ValidateAsync(category);
 

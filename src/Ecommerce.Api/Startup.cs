@@ -39,6 +39,7 @@ namespace Ecommerce.Api
 
             services.AddDbContext<AppDataContext>(options =>
             {
+
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly(typeof(AppDataContext).Assembly.GetName().ToString()));
                 options.UseLowerCaseNamingConvention();
                 

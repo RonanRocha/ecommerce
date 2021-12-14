@@ -27,12 +27,11 @@ namespace Ecommerce.Infrastructure.Mappings
             builder.Property(x => x.Description)
                    .IsRequired()
                    .HasMaxLength(255)
-                   .HasColumnType("VARCHAR");
+                   .HasColumnType("varchar");
 
-            builder.Property(x => x.Code)
-                  .IsRequired()
-                  .HasMaxLength(255)
-                  .HasColumnType("VARCHAR");
+            builder.HasOne(x => x.Order)
+              .WithOne(pm => pm.PaymentMethod)
+              .HasForeignKey<PaymentMethod>(x => x.OrderId);
         }
     }
 }

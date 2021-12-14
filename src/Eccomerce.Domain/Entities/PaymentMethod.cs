@@ -10,11 +10,12 @@ namespace Eccomerce.Domain.Entities
     public class PaymentMethod
     {
         public Guid Id { get; set; }
-        public string Code { get; set; }
-        public string  Description { get; set; }
-        public int? PermitedInstallments { get; set; }
-        public PaymentMethodType  PaymentMethodType { get; set; }
+        public Guid OrderId { get; set; }
+        public string Description { get; set; }
         public DateTime RegisterDate { get; set; }
-        public IList<OrderPaymentMethods> OrderPaymentMethods { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public EntityStatus EntityStatus { get; set; }
+        public Order Order { get; set; }
     }
 }

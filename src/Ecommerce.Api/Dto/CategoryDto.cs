@@ -9,6 +9,7 @@ namespace Ecommerce.Api.Dto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Slug { get; set; }
         public DateTime RegisterDate { get; set; }
 
     }

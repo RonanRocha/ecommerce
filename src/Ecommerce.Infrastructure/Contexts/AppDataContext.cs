@@ -25,8 +25,7 @@ namespace Ecommerce.Infrastructure.Contexts
 
             modelBuilder.ApplyConfiguration(new CategoryMap());
             modelBuilder.ApplyConfiguration(new OrderMap());
-            modelBuilder.ApplyConfiguration(new OrderPaymentMethodsMap());
-            modelBuilder.ApplyConfiguration(new OrderProductsMap());
+            modelBuilder.ApplyConfiguration(new OrderProductMap());
             modelBuilder.ApplyConfiguration(new PaymentMethodMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new UserMap());
@@ -80,10 +79,10 @@ namespace Ecommerce.Infrastructure.Contexts
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderPaymentMethods> OrderPaymentMethods { get; set; }
-        public DbSet<OrderProducts> OrderProducts { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
     }
 }

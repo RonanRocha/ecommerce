@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Eccomerce.Domain.ValueObjects
 {
-    public enum  PaymentMethodType
+    public enum EntityStatus
     {
-        Money = 1,
-        DebitCard = 2,
-        CreditCard = 3,
-
+        Inactive = 0,
+        Active = 1
     }
 }

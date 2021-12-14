@@ -20,15 +20,35 @@ namespace Eccomerce.Domain.Validations
                 .NotEmpty().WithMessage("Nome não pode ser vazio")
                 .GreaterThan("3").WithMessage("Nome deve ter pelo menos 3 caracteres");
 
+            RuleFor(x => x.Slug)
+               .NotNull().WithMessage("Slug não pode ser nulo")
+               .NotEmpty().WithMessage("Slug não pode ser vazio")
+               .GreaterThan("3").WithMessage("Slug deve ter pelo menos 3 caracteres");
+
 
             RuleFor(x => x).Custom((category, context) => {
 
                 var categoryDatabase = _repository.GetByName(category.Name);
 
-                if (category.Name == categoryDatabase?.Name && category.Id != categoryDatabase?.Id)
+             
+                if(!string.IsNullOrEmpty(category.Name))
                 {
-                    context.AddFailure("Nome já existe");
+                    if (category.Name == categoryDatabase?.Name && category.Id != categoryDatabase?.Id)
+                    {
+                        context.AddFailure("Nome já existe");
+                    }
                 }
+             
+
+
+                if (!string.IsNullOrEmpty(category.Slug))
+                {
+                    if (category.Slug == categoryDatabase?.Slug && category.Id != categoryDatabase?.Id)
+                    {
+                        context.AddFailure("Slug já existe");
+                    }
+                }
+
             });
 
 

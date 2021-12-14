@@ -5,13 +5,11 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D5FEE883-E4F7-47FC-BAF6-645EE84BC58E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3FDBEF4B-2BD1-47A6-90B2-01A6748E77F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eccomerce.Domain", "src\Eccomerce.Domain\Eccomerce.Domain.csproj", "{0494BD41-5F46-463C-8662-7B66EB579590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eccomerce.Domain", "src\Eccomerce.Domain\Eccomerce.Domain.csproj", "{0494BD41-5F46-463C-8662-7B66EB579590}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Api", "src\Ecommerce.Api\Ecommerce.Api.csproj", "{6B394ED6-CEA5-4B51-81C2-E58D8C397ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Api", "src\Ecommerce.Api\Ecommerce.Api.csproj", "{6B394ED6-CEA5-4B51-81C2-E58D8C397ABC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Infrastructure", "src\Ecommerce.Infrastructure\Ecommerce.Infrastructure.csproj", "{BBE9AD8E-F3CF-4FD9-B2E8-6A915B1C70BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Infrastructure", "src\Ecommerce.Infrastructure\Ecommerce.Infrastructure.csproj", "{BBE9AD8E-F3CF-4FD9-B2E8-6A915B1C70BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

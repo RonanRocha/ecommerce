@@ -14,6 +14,10 @@ namespace Ecommerce.Infrastructure.Mappings
                    .HasDatabaseName("ix_category_id")
                    .IsUnique();
 
+            builder.HasIndex(x => x.Slug)
+               .HasDatabaseName("ix_category_slug")
+               .IsUnique();
+
             builder.Property(x => x.Id)
                 .HasColumnType("uuid")
                 .HasDefaultValueSql("uuid_generate_v4()")
@@ -22,8 +26,13 @@ namespace Ecommerce.Infrastructure.Mappings
             builder.Property(x => x.Name)
                    .IsRequired()
                    .HasMaxLength(255)
-                   .HasColumnType("VARCHAR");
-                   
+                   .HasColumnType("varchar");
+
+            builder.Property(x => x.Slug)
+                 .IsRequired()
+                 .HasMaxLength(255)
+                 .HasColumnType("varchar");
+
         }
     }
 }

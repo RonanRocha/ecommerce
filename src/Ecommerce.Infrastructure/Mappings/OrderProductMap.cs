@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Infrastructure.Mappings
 {
-    public class OrderProductsMap : IEntityTypeConfiguration<OrderProducts>
+    public class OrderProductMap : IEntityTypeConfiguration<OrderProduct>
     {
-        public void Configure(EntityTypeBuilder<OrderProducts> builder)
+        public void Configure(EntityTypeBuilder<OrderProduct> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -21,23 +21,20 @@ namespace Ecommerce.Infrastructure.Mappings
 
             builder.Property(x => x.Total)
                    .IsRequired()
-                   .HasColumnType("NUMERIC");
+                   .HasColumnType("numeric");
 
             builder.Property(x => x.Subtotal)
                   .IsRequired()
-                  .HasColumnType("NUMERIC");
+                  .HasColumnType("numeric");
 
             builder.Property(x => x.UnitaryValue)
                   .IsRequired()
-                  .HasColumnType("NUMERIC");
+                  .HasColumnType("numeric");
 
             builder.Property(x => x.Discount)
                   .IsRequired()
-                  .HasColumnType("NUMERIC");
+                  .HasColumnType("numeric");
 
-            builder.Property(x => x.Extra)
-                  .IsRequired()
-                  .HasColumnType("NUMERIC");
 
             builder.Property(x => x.Id)
                 .HasColumnType("uuid")

@@ -15,12 +15,15 @@ namespace Eccomerce.Domain.Entities
         public decimal Total { get; set; }
         public decimal Subtotal { get; set; }
         public decimal Discount { get; set; }
-        public decimal Extra { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        public DateTime RegisterDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public EntityStatus EntityStatus { get; set; }
+        public PaymentMethod PaymentMethod {get;set;}
         public User User { get; set; }
-        public IList<OrderProducts> OrderProducts { get; set; }
-        public IList<OrderPaymentMethods> OrderPaymentMethods { get; set; }
-
+        public IList<OrderProduct> OrderProducts { get; set; }
+      
 
     }
 }

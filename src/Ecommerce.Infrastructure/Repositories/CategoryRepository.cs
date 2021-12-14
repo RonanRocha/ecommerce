@@ -21,7 +21,8 @@ namespace Ecommerce.Infrastructure.Repositories
 
         public async Task<IList<Category>> GetAll()
         {
-           return  await _ctx.Categories.ToListAsync();
+           return  await _ctx.Categories.AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<Category> GetById(Guid id)

@@ -27,23 +27,21 @@ namespace Ecommerce.Infrastructure.Mappings
             builder.Property(x => x.OrderCode)
                    .IsRequired()
                    .HasMaxLength(255)
-                   .HasColumnType("VARCHAR");
+                   .HasColumnType("varchar");
 
             builder.Property(x => x.Total)
               .IsRequired()
-              .HasColumnType("NUMERIC");
+              .HasColumnType("numeric");
 
             builder.Property(x => x.Subtotal)
                    .IsRequired()
-                   .HasColumnType("NUMERIC");
+                   .HasColumnType("numeric");
 
             builder.Property(x => x.Discount)
                  .IsRequired()
-                 .HasColumnType("NUMERIC");
+                 .HasColumnType("numeric");
 
-            builder.Property(x => x.Extra)
-                 .IsRequired()
-                 .HasColumnType("NUMERIC");
+      
 
          
         }

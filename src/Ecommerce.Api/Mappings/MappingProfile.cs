@@ -16,7 +16,8 @@ namespace Ecommerce.Api.Mappings
             CreateMap<CategoryDto, Category>()
                 .ForMember(x => x.Id, map => map.Ignore())
                 .ForMember(x => x.RegisterDate, map => map.Ignore())
-                .ForMember(x => x.Products, map => map.Ignore());
+                .ForMember(x => x.Products, map => map.Ignore())
+                .ForMember(x => x.Slug, map => map.Ignore());
 
             CreateMap<Category, CategoryDto>();
               
