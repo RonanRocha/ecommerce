@@ -75,7 +75,9 @@ namespace Ecommerce.Api.Controllers
 
                 await _uow.Commit();
 
-                return Ok(category);
+                var result = _mapper.Map<CategoryDto>(category);
+
+                return Ok(result);
             }
             catch(Exception ex)
             {

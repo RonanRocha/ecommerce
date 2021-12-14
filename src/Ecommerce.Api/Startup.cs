@@ -1,8 +1,7 @@
 using Eccomerce.Domain.Entities;
 using Eccomerce.Domain.Repositories;
 using Eccomerce.Domain.UnitOfWork;
-using Ecommerce.Api.Dto;
-using Ecommerce.Api.Validations;
+using Eccomerce.Domain.Validations;
 using Ecommerce.Infrastructure.Contexts;
 using Ecommerce.Infrastructure.Repositories;
 using Ecommerce.Infrastructure.UnitOfWork;
@@ -18,10 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+
 
 namespace Ecommerce.Api
 {

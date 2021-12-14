@@ -1,13 +1,9 @@
 ﻿using Eccomerce.Domain.Entities;
 using Eccomerce.Domain.Repositories;
-using Ecommerce.Api.Dto;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Ecommerce.Api.Validations
+
+namespace Eccomerce.Domain.Validations
 {
     public class CategoryValidation : AbstractValidator<Category>
     {
