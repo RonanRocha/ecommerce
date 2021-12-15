@@ -18,6 +18,8 @@ namespace Eccomerce.Domain.Validations
              .NotEmpty().WithMessage("Descrição não pode ser vazio")
              .GreaterThan("3").WithMessage("Descrição deve ter pelo menos 3 caracteres");
 
+  
+
             RuleFor(x => x.CategoryId)
                .NotNull().WithMessage("Categoria não pode ser nulo")
                .NotEmpty().WithMessage("Categoria não pode ser vazio");

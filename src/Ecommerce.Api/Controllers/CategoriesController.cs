@@ -2,6 +2,7 @@
 using Eccomerce.Domain.Entities;
 using Eccomerce.Domain.Repositories;
 using Eccomerce.Domain.UnitOfWork;
+using Eccomerce.Domain.ValueObjects;
 using Ecommerce.Api.Dto;
 using Ecommerce.Api.Helpers;
 using FluentValidation;
@@ -71,6 +72,8 @@ namespace Ecommerce.Api.Controllers
                 var category = _mapper.Map<Category>(categoryDto);
 
                 category.Slug = SlugBuilder.GenerateSlug(category.Name);
+                category.EntityStatus = EntityStatus.Active;
+                category.RegisterDate = DateTime.Now;
 
                 var resultValidation = await _validator.ValidateAsync(category);
 
@@ -105,12 +108,13 @@ namespace Ecommerce.Api.Controllers
                 if (category == null) return NotFound();
 
                 category.Name = categoryDto.Name;
+                category.UpdateDate = DateTime.Now;
 
                 var resultValidation = await _validator.ValidateAsync(category);
 
                 if (!resultValidation.IsValid) return UnprocessableEntity(resultValidation.Errors);
 
-                _categoryRepository.Update(category);
+                await _categoryRepository.Update(category);
 
                 await _uow.Commit();
 
@@ -139,7 +143,10 @@ namespace Ecommerce.Api.Controllers
 
                 if (category == null) return NotFound();
 
-                await _categoryRepository.Remove(category.Id);
+                category.DeleteDate = DateTime.Now;
+                category.EntityStatus = EntityStatus.Inactive;
+
+                await _categoryRepository.Update(category);
 
                 await _uow.Commit();
 

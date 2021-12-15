@@ -29,20 +29,17 @@ namespace Ecommerce.Infrastructure.Repositories
             return await _ctx.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task Remove(TKey id)
+
+
+        public async Task Save(TEntity entity)
         {
-            var obj = await _ctx.Set<TEntity>().FindAsync(id);
-            _ctx.Set<TEntity>().Remove(obj);
+             await _ctx.Set<TEntity>().AddAsync(entity);
         }
 
-        public async Task Save(TEntity Object)
+        public  Task Update(TEntity entity)
         {
-             await _ctx.Set<TEntity>().AddAsync(Object);
-        }
-
-        public async  Task Update(TEntity Object)
-        {
-           _ctx.Set<TEntity>().Update(Object);
+           _ctx.Set<TEntity>().Update(entity);
+            return Task.CompletedTask;
         }
     }
 }

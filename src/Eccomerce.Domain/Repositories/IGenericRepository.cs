@@ -13,6 +13,5 @@ namespace Eccomerce.Domain.Repositories
         Task Save(TEntity entity);
         Task<TEntity> GetById(TKey id);
         Task Update(TEntity entity);
-        Task Remove(TKey id);
     }
 }
