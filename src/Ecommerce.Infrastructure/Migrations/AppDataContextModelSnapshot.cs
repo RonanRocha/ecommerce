@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Ecommerce.Api.Migrations
+namespace Ecommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDataContext))]
     partial class AppDataContextModelSnapshot : ModelSnapshot
@@ -164,6 +164,10 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("orderstatus");
 
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("paymentmethodid");
+
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("registerdate");
@@ -190,6 +194,10 @@ namespace Ecommerce.Api.Migrations
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasDatabaseName("ix_order_id");
+
+                    b.HasIndex("PaymentMethodId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_orders_paymentmethodid");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_orders_userid");
@@ -283,10 +291,6 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("entitystatus");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("orderid");
-
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("registerdate");
@@ -301,10 +305,6 @@ namespace Ecommerce.Api.Migrations
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasDatabaseName("ix_paymentmethod_id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_paymentmethods_orderid");
 
                     b.ToTable("paymentmethods");
                 });
@@ -323,13 +323,9 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("barcode");
 
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("text")
-                        .HasColumnName("categoryid");
-
-                    b.Property<Guid?>("CategoryId1")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid")
-                        .HasColumnName("categoryid1");
+                        .HasColumnName("categoryid");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp without time zone")
@@ -357,15 +353,11 @@ namespace Ecommerce.Api.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("updatedate");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("integer")
-                        .HasColumnName("weight");
-
                     b.HasKey("Id")
                         .HasName("pk_products");
 
-                    b.HasIndex("CategoryId1")
-                        .HasDatabaseName("ix_products_categoryid1");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_products_categoryid");
 
                     b.HasIndex("Id")
                         .IsUnique()
@@ -632,10 +624,19 @@ namespace Ecommerce.Api.Migrations
 
             modelBuilder.Entity("Eccomerce.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("Eccomerce.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithOne("Order")
+                        .HasForeignKey("Eccomerce.Domain.Entities.Order", "PaymentMethodId")
+                        .HasConstraintName("fk_orders_paymentmethods_paymentmethodid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Eccomerce.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_orders_users_userid");
+
+                    b.Navigation("PaymentMethod");
 
                     b.Navigation("User");
                 });
@@ -661,24 +662,14 @@ namespace Ecommerce.Api.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Eccomerce.Domain.Entities.PaymentMethod", b =>
-                {
-                    b.HasOne("Eccomerce.Domain.Entities.Order", "Order")
-                        .WithOne("PaymentMethod")
-                        .HasForeignKey("Eccomerce.Domain.Entities.PaymentMethod", "OrderId")
-                        .HasConstraintName("fk_paymentmethods_orders_orderid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("Eccomerce.Domain.Entities.Product", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId1")
-                        .HasConstraintName("fk_products_categories_categoryid1");
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("fk_products_categories_categoryid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -748,8 +739,11 @@ namespace Ecommerce.Api.Migrations
             modelBuilder.Entity("Eccomerce.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderProducts");
+                });
 
-                    b.Navigation("PaymentMethod");
+            modelBuilder.Entity("Eccomerce.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Eccomerce.Domain.Entities.Product", b =>

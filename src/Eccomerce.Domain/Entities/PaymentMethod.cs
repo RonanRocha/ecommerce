@@ -10,7 +10,6 @@ namespace Eccomerce.Domain.Entities
     public class PaymentMethod
     {
         public Guid Id { get; set; }
-        public Guid OrderId { get; set; }
         public string Description { get; set; }
         public DateTime RegisterDate { get; set; }
         public DateTime? UpdateDate { get; set; }

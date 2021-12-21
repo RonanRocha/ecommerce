@@ -8,7 +8,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ecommerce.Api.Controllers
@@ -89,6 +88,72 @@ namespace Ecommerce.Api.Controllers
             catch (Exception ex)
             {
                 await _uow.Rollback();
+                return BadRequest();
+            }
+
+        }
+
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult> Update([FromBody] ProductDto productDto, Guid id)
+        {
+            try
+            {
+
+                var product = await _productRepository.GetById(id);
+
+                if (product == null) return NotFound();
+
+                product.Description = productDto.Description;
+                product.CategoryId = productDto.CategoryId;
+                product.Price = productDto.Price;
+                product.Barcode = productDto.Barcode;
+                product.UpdateDate = DateTime.Now;
+
+                var resultValidation = await _validator.ValidateAsync(product);
+
+                if (!resultValidation.IsValid) return UnprocessableEntity(resultValidation.Errors);
+
+                await _productRepository.Update(product);
+
+                await _uow.Commit();
+
+                var result = _mapper.Map<ProductDto>(product);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                await _uow.Rollback();
+                return BadRequest();
+            }
+
+
+        }
+
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> Remove(Guid id)
+        {
+            try
+            {
+                var product = await _productRepository.GetById(id);
+
+                if (product == null) return NotFound();
+
+                product.DeleteDate = DateTime.Now;
+                product.EntityStatus = EntityStatus.Inactive;
+
+                await _productRepository.Update(product);
+
+                await _uow.Commit();
+
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
                 return BadRequest();
             }
 

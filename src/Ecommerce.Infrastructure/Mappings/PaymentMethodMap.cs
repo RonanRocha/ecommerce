@@ -29,9 +29,7 @@ namespace Ecommerce.Infrastructure.Mappings
                    .HasMaxLength(255)
                    .HasColumnType("varchar");
 
-            builder.HasOne(x => x.Order)
-              .WithOne(pm => pm.PaymentMethod)
-              .HasForeignKey<PaymentMethod>(x => x.OrderId);
+         
         }
     }
 }

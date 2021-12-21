@@ -1,11 +1,7 @@
 ﻿using Eccomerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Ecommerce.Infrastructure.Mappings
 {
@@ -20,9 +16,9 @@ namespace Ecommerce.Infrastructure.Mappings
                    .IsUnique();
 
             builder.Property(x => x.Id)
-                .HasColumnType("uuid")
-                .HasDefaultValueSql("uuid_generate_v4()")    // Use 
-                .IsRequired();
+                   .HasColumnType("uuid")
+                   .HasDefaultValueSql("uuid_generate_v4()")    // Use 
+                   .IsRequired();
 
             builder.Property(x => x.OrderCode)
                    .IsRequired()
@@ -30,20 +26,25 @@ namespace Ecommerce.Infrastructure.Mappings
                    .HasColumnType("varchar");
 
             builder.Property(x => x.Total)
-              .IsRequired()
-              .HasColumnType("numeric");
+                   .IsRequired()
+                   .HasColumnType("numeric");
 
             builder.Property(x => x.Subtotal)
                    .IsRequired()
                    .HasColumnType("numeric");
 
             builder.Property(x => x.Discount)
-                 .IsRequired()
-                 .HasColumnType("numeric");
+                   .IsRequired()
+                   .HasColumnType("numeric");
 
-      
 
-         
+            builder.HasOne(x => x.PaymentMethod)
+                   .WithOne(pm => pm.Order)
+                   .HasForeignKey<Order>(x => x.PaymentMethodId);
+
+
+
+
         }
     }
 }

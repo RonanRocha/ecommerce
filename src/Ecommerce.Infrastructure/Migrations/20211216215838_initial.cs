@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Ecommerce.Api.Migrations
+namespace Ecommerce.Infrastructure.Migrations
 {
     public partial class initial : Migration
     {
@@ -26,6 +26,22 @@ namespace Ecommerce.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_categories", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "paymentmethods",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    description = table.Column<string>(type: "varchar", maxLength: 255, nullable: false),
+                    registerdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    updatedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    deletedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    entitystatus = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_paymentmethods", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,26 +88,24 @@ namespace Ecommerce.Api.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    categoryid = table.Column<Guid>(type: "uuid", nullable: false),
                     barcode = table.Column<string>(type: "varchar", maxLength: 500, nullable: false),
                     description = table.Column<string>(type: "varchar", maxLength: 500, nullable: false),
-                    weight = table.Column<int>(type: "integer", nullable: false),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
                     registerdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     updatedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     deletedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    entitystatus = table.Column<int>(type: "integer", nullable: false),
-                    categoryid = table.Column<string>(type: "text", nullable: true),
-                    categoryid1 = table.Column<Guid>(type: "uuid", nullable: true)
+                    entitystatus = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_products", x => x.id);
                     table.ForeignKey(
-                        name: "fk_products_categories_categoryid1",
-                        column: x => x.categoryid1,
+                        name: "fk_products_categories_categoryid",
+                        column: x => x.categoryid,
                         principalTable: "categories",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,6 +162,7 @@ namespace Ecommerce.Api.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    paymentmethodid = table.Column<Guid>(type: "uuid", nullable: false),
                     ordercode = table.Column<string>(type: "varchar", maxLength: 255, nullable: false),
                     orderdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     total = table.Column<decimal>(type: "numeric", nullable: false),
@@ -163,6 +178,12 @@ namespace Ecommerce.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_orders", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_orders_paymentmethods_paymentmethodid",
+                        column: x => x.paymentmethodid,
+                        principalTable: "paymentmethods",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_orders_users_userid",
                         column: x => x.userid,
@@ -289,29 +310,6 @@ namespace Ecommerce.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "paymentmethods",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    orderid = table.Column<Guid>(type: "uuid", nullable: false),
-                    description = table.Column<string>(type: "varchar", maxLength: 255, nullable: false),
-                    registerdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    updatedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    deletedate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    entitystatus = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_paymentmethods", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_paymentmethods_orders_orderid",
-                        column: x => x.orderid,
-                        principalTable: "orders",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "ix_addresses_userid",
                 table: "addresses",
@@ -352,6 +350,12 @@ namespace Ecommerce.Api.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_orders_paymentmethodid",
+                table: "orders",
+                column: "paymentmethodid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_orders_userid",
                 table: "orders",
                 column: "userid");
@@ -363,21 +367,15 @@ namespace Ecommerce.Api.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_paymentmethods_orderid",
-                table: "paymentmethods",
-                column: "orderid",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "ix_product_id",
                 table: "products",
                 column: "id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_products_categoryid1",
+                name: "ix_products_categoryid",
                 table: "products",
-                column: "categoryid1");
+                column: "categoryid");
 
             migrationBuilder.CreateIndex(
                 name: "ix_roleclaims_roleid",
@@ -432,9 +430,6 @@ namespace Ecommerce.Api.Migrations
                 name: "orderproducts");
 
             migrationBuilder.DropTable(
-                name: "paymentmethods");
-
-            migrationBuilder.DropTable(
                 name: "roleclaims");
 
             migrationBuilder.DropTable(
@@ -450,19 +445,22 @@ namespace Ecommerce.Api.Migrations
                 name: "usertokens");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "orders");
 
             migrationBuilder.DropTable(
-                name: "orders");
+                name: "products");
 
             migrationBuilder.DropTable(
                 name: "roles");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "paymentmethods");
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "categories");
         }
     }
 }

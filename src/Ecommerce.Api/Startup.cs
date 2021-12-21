@@ -56,9 +56,13 @@ namespace Ecommerce.Api
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+
             services.AddScoped<IValidator<Category>, CategoryValidation>();
             services.AddScoped<IValidator<Product>, ProductValidation>();
-
+            services.AddScoped<IValidator<PaymentMethod>, PaymentMethodValidation>();
+          
+            
 
 
             services.AddControllers();
