@@ -2,10 +2,12 @@ using Eccomerce.Domain.Entities;
 using Eccomerce.Domain.Repositories;
 using Eccomerce.Domain.UnitOfWork;
 using Eccomerce.Domain.Validations;
+using Ecommerce.Api.Builders;
 using Ecommerce.Infrastructure.Contexts;
 using Ecommerce.Infrastructure.Repositories;
 using Ecommerce.Infrastructure.UnitOfWork;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +17,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-
+using System.Text;
 
 namespace Ecommerce.Api
 {
@@ -61,8 +64,31 @@ namespace Ecommerce.Api
             services.AddScoped<IValidator<Category>, CategoryValidation>();
             services.AddScoped<IValidator<Product>, ProductValidation>();
             services.AddScoped<IValidator<PaymentMethod>, PaymentMethodValidation>();
-          
-            
+
+            services.AddScoped<ITokenBuilder, TokenBuilder>();
+
+            services.AddCors();
+
+            var key = Encoding.ASCII.GetBytes(Configuration["JWT:key"]);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+
 
 
             services.AddControllers();
@@ -82,8 +108,9 @@ namespace Ecommerce.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ecommerce.Api v1"));
             }
 
+            app.UseCors();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

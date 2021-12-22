@@ -34,6 +34,11 @@ namespace Ecommerce.Api.Mappings
 
 
 
+           
+
+
+
+
             CreateMap<Product, ProductDto>();
 
 

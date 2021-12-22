@@ -5,6 +5,7 @@ using Eccomerce.Domain.UnitOfWork;
 using Eccomerce.Domain.ValueObjects;
 using Ecommerce.Api.Dto;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Api.Controllers
 {
+
+    [Authorize]
     [ApiController]
     [Route("api/products")]
     public class ProductsController : Controller
@@ -33,7 +36,7 @@ namespace Ecommerce.Api.Controllers
             _validator = validator;
         }
 
-
+       
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<IList<ProductDto>>> GetAll()

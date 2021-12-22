@@ -20,6 +20,30 @@ namespace Ecommerce.Infrastructure.Mappings
                 .HasColumnType("uuid")
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .IsRequired();
+
+
+           builder.HasMany(e => e.Claims)
+                .WithOne()
+                .HasForeignKey(uc => uc.UserId)
+                .IsRequired();
+
+           builder.HasMany(e => e.Logins)
+                .WithOne()
+                .HasForeignKey(ul => ul.UserId)
+                .IsRequired();
+
+           builder.HasMany(e => e.Tokens)
+                .WithOne()
+                .HasForeignKey(ut => ut.UserId)
+                .IsRequired();
+
+           builder.HasMany(e => e.UserRoles)
+                .WithOne()
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
         }
     }
 }
+
+
+

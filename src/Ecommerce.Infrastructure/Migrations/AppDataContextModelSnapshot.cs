@@ -687,7 +687,7 @@ namespace Ecommerce.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.User", null)
-                        .WithMany()
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_userclaims_users_userid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -697,7 +697,7 @@ namespace Ecommerce.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.User", null)
-                        .WithMany()
+                        .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_userlogins_users_userid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -714,7 +714,7 @@ namespace Ecommerce.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Eccomerce.Domain.Entities.User", null)
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_userroles_users_userid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -724,7 +724,7 @@ namespace Ecommerce.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Eccomerce.Domain.Entities.User", null)
-                        .WithMany()
+                        .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_usertokens_users_userid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -755,7 +755,15 @@ namespace Ecommerce.Infrastructure.Migrations
                 {
                     b.Navigation("Addresses");
 
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
                     b.Navigation("Orders");
+
+                    b.Navigation("Tokens");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

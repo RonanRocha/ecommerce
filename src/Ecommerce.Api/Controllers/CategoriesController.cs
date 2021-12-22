@@ -6,6 +6,7 @@ using Eccomerce.Domain.ValueObjects;
 using Ecommerce.Api.Dto;
 using Ecommerce.Api.Helpers;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/categories")]
     public class CategoriesController : Controller

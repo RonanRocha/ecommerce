@@ -5,14 +5,15 @@ using Eccomerce.Domain.UnitOfWork;
 using Eccomerce.Domain.ValueObjects;
 using Ecommerce.Api.Dto;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ecommerce.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/paymentmethods")]
     public class PaymentMethodsController : Controller
