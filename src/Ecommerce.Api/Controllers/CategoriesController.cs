@@ -66,6 +66,7 @@ namespace Ecommerce.Api.Controllers
 
         [HttpPost]
         [Route("")]
+        [Authorize(Policy ="Administrators")]
         public async Task<ActionResult> Save([FromBody]CategoryDto categoryDto)
         {
             try
@@ -100,6 +101,7 @@ namespace Ecommerce.Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Policy = "Administrators")]
         public async Task<ActionResult> Update([FromBody] CategoryDto categoryDto, Guid id)
         {
             try
@@ -137,6 +139,7 @@ namespace Ecommerce.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Policy = "Administrators")]
         public async Task<ActionResult> Remove(Guid id)
         {
             try

@@ -4,6 +4,7 @@ using Ecommerce.Api.Builders;
 using Ecommerce.Api.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Ecommerce.Api.Controllers
@@ -47,7 +48,7 @@ namespace Ecommerce.Api.Controllers
 
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            var token = _tokenBuilder.Build(user);
+            var token = await _tokenBuilder.Build(user);
 
             return Ok(token);
 
@@ -61,10 +62,23 @@ namespace Ecommerce.Api.Controllers
         {
 
             var user = new User { UserName = loginDto.Email, Email = loginDto.Email };
+
             var result = await _userManager.CreateAsync(user, loginDto.Password);
+
+
+            var claims = await _userManager.AddClaimsAsync(user, new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.UserName.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email.ToString()),
+                    new Claim(ClaimTypes.Role, "customer")
+                });
+
+          
+
             if (result.Succeeded)
             {
-                var token = _tokenBuilder.Build(user);
+                var token = await _tokenBuilder.Build(user);
+
                 return Ok(token);
             }
             else

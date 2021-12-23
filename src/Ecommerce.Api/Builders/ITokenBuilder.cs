@@ -8,6 +8,6 @@ namespace Ecommerce.Api.Builders
 {
     public interface ITokenBuilder
     {
-        public string Build(User user);
+        public  Task<string> Build(User user);
     }
 }

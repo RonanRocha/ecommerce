@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Security.Claims;
 using System.Text;
 
 namespace Ecommerce.Api
@@ -47,9 +48,6 @@ namespace Ecommerce.Api
                 options.UseLowerCaseNamingConvention();
                 
             });
-
-
-           
 
 
             services.AddIdentity<User, IdentityRole<Guid>>()
@@ -88,6 +86,8 @@ namespace Ecommerce.Api
                 };
             });
 
+            services.AddAuthorization(x => x.AddPolicy("Administrators", p => p.RequireClaim(ClaimTypes.Role, "administrator")));
+
 
 
 
@@ -111,6 +111,7 @@ namespace Ecommerce.Api
             app.UseCors();
             app.UseRouting();
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
