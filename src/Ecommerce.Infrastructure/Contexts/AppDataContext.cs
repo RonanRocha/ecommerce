@@ -1,4 +1,8 @@
-﻿using Eccomerce.Domain.Entities;
+﻿
+
+
+
+using Eccomerce.Domain.Entities;
 using Ecommerce.Infrastructure.Mappings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -9,6 +13,8 @@ namespace Ecommerce.Infrastructure.Contexts
 {
     public class AppDataContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
+       
+
         public AppDataContext(DbContextOptions<AppDataContext> options) : base(options)
         {
 
@@ -35,22 +41,19 @@ namespace Ecommerce.Infrastructure.Contexts
             modelBuilder.Entity<IdentityUserClaim<Guid>>(b =>
             {
                 b.ToTable("userclaims");
-
-         
+        
             });
 
             modelBuilder.Entity<IdentityUserLogin<Guid>>(b =>
             {
                 b.ToTable("userlogins");
-
-          
+      
             });
 
             modelBuilder.Entity<IdentityUserToken<Guid>>(b =>
             {
                 b.ToTable("usertokens");
 
- 
             });
 
             modelBuilder.Entity<IdentityRole<Guid>>(b =>
@@ -70,10 +73,6 @@ namespace Ecommerce.Infrastructure.Contexts
                 b.ToTable("userroles");
 
             });
-
-
-           
-
 
         }
 
